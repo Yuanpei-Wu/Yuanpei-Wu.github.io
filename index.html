@@ -64,7 +64,7 @@
     <article id="post-ocpc" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/10/20/ocpc/" class="article-date">
-  <time datetime="2019-10-20T06:10:38.347Z" itemprop="datePublished">2019-10-20</time>
+  <time datetime="2019-10-20T06:23:59.481Z" itemprop="datePublished">2019-10-20</time>
 </a>
     
   </div>
@@ -97,19 +97,19 @@
 <h2 id="ocpc-综述">OCPC 综述</h2>
 <p>我先尝试给 OCPC 做一个综述，然后再从各个环节进行解释。OCPC 就是，广告主给广告 a 定一个预期的出价 b<sub>a</sub> ，平台将广告投放给不同的用户时，可以在一定范围内调整出价 b<sub>a</sub><sup>* </sup> ，在满足约束条件的前提下（约束条件可以推导出 l (b<sub>a</sub><sup>* </sup>) &lt; b<sub>a</sub><sup>* </sup> &lt; u (b<sub>a</sub><sup>* </sup>) ），使得 eCPM 排序最高的广告，它的 f 函数也最大。f 函数是目标函数，和我们想优化的目标正相关。</p>
 <h2 id="roi-约束">ROI 约束</h2>
-<p>我们可以帮广告主做出价优化，但是有个约束条件，就是不能损害广告主的利益，那么如何保证广告主的利益呢？保证 ROI 不降。ROI，Return on Investment，即投资回报率，就是广告主通过打广告赚的钱与打广告花的钱的比率。对于投放给某个用户且被点击的广告的 ROI ，转化率 p(c|u,a) 乘以商品单价 v<sub>a </sub> 就是广告主此次广告投放的收益，出价 b<sub>a</sub> 就是广告主此次广告投放的成本，于是可得如下公式： [ roi_{(u, a)} = {b_a}]</p>
-<p>如果我们不使用任何优化策略，即 b<sub>a</sub> 保持不变，那么可以计算该广告投放给所有用户的 ROI，如下： [ roi_a = {b_a * _u n_u} =  {b_a}]</p>
-<p>其中 n<sub>u</sub> 是每个用户点击该广告的次数，E<sub>u</sub>[p(c|u,a)] 是广告的平均转化率，用总的转化次数 [ _u n_u * p(c|u,a)] 除以总的点击次数 [<em>u n_u] 为了保证 ROI 不降，对于每一个投放给特定用户的广告做出价调整后，都有 [ roi</em>{(u, a)} &gt;= roi_a] 代入后可得 [  {b_a} &lt;= ]</p>
+<p>我们可以帮广告主做出价优化，但是有个约束条件，就是不能损害广告主的利益，那么如何保证广告主的利益呢？保证 ROI 不降。ROI，Return on Investment，即投资回报率，就是广告主通过打广告赚的钱与打广告花的钱的比率。对于投放给某个用户且被点击的广告的 ROI ，转化率 p(c|u,a) 乘以商品单价 v<sub>a </sub> 就是广告主此次广告投放的收益，出价 b<sub>a</sub> 就是广告主此次广告投放的成本，于是可得如下公式： %% roi_{(u, a)} = {b_a} %%</p>
+<p>如果我们不使用任何优化策略，即 b<sub>a</sub> 保持不变，那么可以计算该广告投放给所有用户的 ROI，如下： %% roi_a = {b_a * _u n_u} =  {b_a} %%</p>
+<p>其中 n<sub>u</sub> 是每个用户点击该广告的次数，E<sub>u</sub>[p(c|u,a)] 是广告的平均转化率，用总的转化次数 %% _u n_u * p(c|u,a) %% 除以总的点击次数 %%<em>u n_u %% 为了保证 ROI 不降，对于每一个投放给特定用户的广告做出价调整后，都有 %% roi</em>{(u, a)} &gt;= roi_a %% 代入后可得 %%  {b_a} &lt;=  %%</p>
 <p>由此可以得到 b<sub>a</sub> 可调整的区域如下： <img src="page-05774ae8.png" /></p>
 <p>其中有几点需要注意： * y = 1+fa 和 y = 1-fa 这两条直线是为了保障广告主利益而设置的，试想，广告主出价过高，高到哪怕用户买了这个商品也赚不回广告钱，那广告主会亏到吐血，反之，出价过低，广告主拿不到流量，预算花不出去，也是个问题。</p>
 <ul>
 <li>在 x &lt; 1 的区域内，没有 y &lt;= x 的限制。这一点，论文中并没有详细说明，我猜测，可能是因为在低质量流量区域也做 y &lt;= x 的限制的话，过低质量的流量广告主就没法出价（在图上延长一下 y = x 曲线你就能看出来了），这同样存在广告主拿不到流量花不出预算的问题。</li>
 </ul>
 <h2 id="目标函数-f">目标函数 f</h2>
-<p>目标函数 f 是我们的优化目标，如果想要优化 GMV ，可以将 f 设置为： [ f_1(k,b_k^{* }) = pctr_k * pcvr_k * v_k] 如果既考虑 GMV 又考虑平台利益，可以设置为： [ f_2(k,b_k^{* }) = pctr_k * pcvr_k * v_k + pctr_k * b_k^{* }] 总之，要优化什么，f 函数就做相应的更改。</p>
+<p>目标函数 f 是我们的优化目标，如果想要优化 GMV ，可以将 f 设置为： %% f_1(k,b_k^{* }) = pctr_k * pcvr_k * v_k %% 如果既考虑 GMV 又考虑平台利益，可以设置为： %% f_2(k,b_k^{* }) = pctr_k * pcvr_k * v_k + pctr_k * b_k^{* } %% 总之，要优化什么，f 函数就做相应的更改。</p>
 <h2 id="排序算法">排序算法</h2>
 <p>好了，准备工作已经完成，接下来我们要从一组广告中找出 N 个（通常 N &lt;= 3）广告，且满足排名第一的广告 eCPM 分值和 f 函数都最大，排名第二的广告 eCPM 分值和 f 函数 都次大，以此类推。</p>
-<p>现在我们得到一组广告，对于每个广告，都有预估的点击率 pctr ，出价 bid ，出价上限 u(b<sup>* </sup>)，由此计算出 eCPM 分值上限： [ u(s^{* }) = u(b^{* }) * pctr ] 以及 eCPM 分值下限 l (s<sup>* </sup>)，并计算出 f 函数值。根据 f 函数由大到小排序可得下表：</p>
+<p>现在我们得到一组广告，对于每个广告，都有预估的点击率 pctr ，出价 bid ，出价上限 u(b<sup>* </sup>)，由此计算出 eCPM 分值上限： %% u(s^{* }) = u(b^{* }) * pctr %% 以及 eCPM 分值下限 l (s<sup>* </sup>)，并计算出 f 函数值。根据 f 函数由大到小排序可得下表：</p>
 <p><img src="page-b01ffce9.png" /></p>
 <p>排序的过程表述如下：</p>
 <ul>
@@ -139,7 +139,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/10/20/ocpc/" data-id="ck1ylm8il00005o8zaoz441c1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/10/20/ocpc/" data-id="ck1ylvh8a00006c8z1wcncri6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -176,7 +176,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/10/20/tf-cpp/" data-id="ck1ylm8ip00015o8zhxxhh9k9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/10/20/tf-cpp/" data-id="ck1ylvh8f00016c8zbdn63eyr" class="article-share-link">Share</a>
       
       
     </footer>
