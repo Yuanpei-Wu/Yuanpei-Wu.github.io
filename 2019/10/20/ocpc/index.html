@@ -14,13 +14,13 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="OCPC OCPX 广告投放策略从 2016 年左右开始兴起，很快就成为了在线广告领域的主流，在这个过程中，阿里的一篇论文 Optimized Cost per Click in Taobao Display Advertising 对 OCPX 的普及起到了关键的作用。本文整理了一下该论文的脉络，谈谈我对 OCPC 的理解。 首先我们要知道， OCPX 模式应用在广告平台进行广告投放和广告展示的">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;.com&#x2F;&#x2F;page-05774ae8.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;.com&#x2F;&#x2F;page-b01ffce9.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;.com&#x2F;&#x2F;page-a1fad1a4.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;.com&#x2F;&#x2F;page-c45d3a68.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;10&#x2F;20&#x2F;ocpc&#x2F;page-05774ae8.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;10&#x2F;20&#x2F;ocpc&#x2F;assets&#x2F;page-b01ffce9.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;10&#x2F;20&#x2F;ocpc&#x2F;assets&#x2F;page-a1fad1a4.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;10&#x2F;20&#x2F;ocpc&#x2F;assets&#x2F;page-c45d3a68.png">
 <meta property="og:updated_time" content="2019-10-20T05:29:58.428Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;.com&#x2F;&#x2F;page-05774ae8.png">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;10&#x2F;20&#x2F;ocpc&#x2F;page-05774ae8.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -106,7 +106,7 @@
 <p>我们可以帮广告主做出价优化，但是有个约束条件，就是不能损害广告主的利益，那么如何保证广告主的利益呢？保证 ROI 不降。ROI，Return on Investment，即投资回报率，就是广告主通过打广告赚的钱与打广告花的钱的比率。对于投放给某个用户且被点击的广告的 ROI ，转化率 p(c|u,a) 乘以商品单价 v<sub>a </sub> 就是广告主此次广告投放的收益，出价 b<sub>a</sub> 就是广告主此次广告投放的成本，于是可得如下公式： [ roi_{(u, a)} = {b_a}]</p>
 <p>如果我们不使用任何优化策略，即 b<sub>a</sub> 保持不变，那么可以计算该广告投放给所有用户的 ROI，如下： [ roi_a = {b_a * _u n_u} =  {b_a}]</p>
 <p>其中 n<sub>u</sub> 是每个用户点击该广告的次数，E<sub>u</sub>[p(c|u,a)] 是广告的平均转化率，用总的转化次数 [ _u n_u * p(c|u,a)] 除以总的点击次数 [<em>u n_u] 为了保证 ROI 不降，对于每一个投放给特定用户的广告做出价调整后，都有 [ roi</em>{(u, a)} &gt;= roi_a] 代入后可得 [  {b_a} &lt;= ]</p>
-<p>由此可以得到 b<sub>a</sub> 可调整的区域如下： <img src="/.com//page-05774ae8.png"></p>
+<p>由此可以得到 b<sub>a</sub> 可调整的区域如下： <img src="page-05774ae8.png" /></p>
 <p>其中有几点需要注意： * y = 1+fa 和 y = 1-fa 这两条直线是为了保障广告主利益而设置的，试想，广告主出价过高，高到哪怕用户买了这个商品也赚不回广告钱，那广告主会亏到吐血，反之，出价过低，广告主拿不到流量，预算花不出去，也是个问题。</p>
 <ul>
 <li>在 x &lt; 1 的区域内，没有 y &lt;= x 的限制。这一点，论文中并没有详细说明，我猜测，可能是因为在低质量流量区域也做 y &lt;= x 的限制的话，过低质量的流量广告主就没法出价（在图上延长一下 y = x 曲线你就能看出来了），这同样存在广告主拿不到流量花不出预算的问题。</li>
@@ -116,7 +116,7 @@
 <h2 id="排序算法">排序算法</h2>
 <p>好了，准备工作已经完成，接下来我们要从一组广告中找出 N 个（通常 N &lt;= 3）广告，且满足排名第一的广告 eCPM 分值和 f 函数都最大，排名第二的广告 eCPM 分值和 f 函数 都次大，以此类推。</p>
 <p>现在我们得到一组广告，对于每个广告，都有预估的点击率 pctr ，出价 bid ，出价上限 u(b<sup>* </sup>)，由此计算出 eCPM 分值上限： [ u(s^{* }) = u(b^{* }) * pctr ] 以及 eCPM 分值下限 l (s<sup>* </sup>)，并计算出 f 函数值。根据 f 函数由大到小排序可得下表：</p>
-<p><img src="/.com//page-b01ffce9.png"></p>
+<p><img src="assets/page-b01ffce9.png" /></p>
 <p>排序的过程表述如下：</p>
 <ul>
 <li>第一步，找到最大的 l (s<sub>a</sub><sup>* </sup>) ，以该表为例为 0.09；</li>
@@ -124,7 +124,7 @@
 <li>第三步，对于剩下的每个广告，更新 u(s<sub>a</sub><sup>* </sup>)，若大于 u(s<sub>k</sub><sup>* </sup>)，则更改为 u(s<sub>k</sub><sup>* </sup>)，b<sup>* </sup> 也需同比例减小，若 f 函数值和 b<sup>* </sup> 相关，也需要做相应改变；</li>
 <li>第四步，重复以上三个步骤，直到筛选出 N 个广告。</li>
 </ul>
-<p><img src="/.com//page-a1fad1a4.png"></p>
+<p><img src="assets/page-a1fad1a4.png" /></p>
 <p>解释一下这样做的原因：</p>
 <p>对每一个广告都有 eCPM 分值上限和下限，如果广告 A 的 f 函数值特别大，我们自然想将它排在第一，但如果它的 eCPM 分值特别低，低到它的上限，还小于某个广告（不妨称之为广告 B ）的下限，那么无论我们怎么调整这两个广告的出价，也不可能在 eCPM 排序时使得 A 排在 B 前面，所以我们就不能选择 A 作为排名第一的广告。这就是步骤一和二在做的事。</p>
 <p>在我们筛选出 f 函数值最大且其 eCPM 分值上限大于所有其它广告的分值下限后，我们需要调整其它广告，使得其它广告的 eCPM 分值不会大于这个广告，这样在做 eCPM 排序时我们才能保证排名第一的广告其 eCPM 分值和 f 函数值都最大。那么怎么调整其它广告呢？很简单，降低它们的 eCPM 分值上限，不超过排名第一的广告就行了。这就是步骤二和三在做的事情。</p>
@@ -135,7 +135,7 @@
 <p>但是，校准需要知道 pctr 和 rctr 的变化曲线，但是 rctr 是一个统计值，怎么会有变化曲线。或者这么说，现在给你10000个样本，每个样本都可以跑模型计算出一个 pctr，而 rctr 是统计出来的，比如 10000 个样本里有 100 个正样本，那么 rctr 就是 0.01 。好了，现在你有 10000 个 pctr 的值，但是只有一个 rctr，你怎么做校准？</p>
 <p>论文给出的解决方式是分组，根据 pctr 的大小分为若干组，但是论文没有给出具体的分组方式。我理解的分组可以像这样：比如 pctr 的取值范围是 [0.01, 0.21] ，可以以 0.01 为间隔分为20个组，并以每个区间的中间值作为该区间的样本的 pctr，然后统计每个区间的正样本占区间样本总数的比例，即为该区间的 rctr 。当然，这种分组并不合理，因为比如很有可能大多数 pctr 都落在 [0.01, 0.05] 区间内，而 [0.05, 0.21] 区间样本太少，结果不可信。个人认为按照样本的数量而不是 pctr 的值进行划分可能是一种更合理的划分方式。</p>
 <p>论文对 cvr 的校准非常简单粗暴，但就是有效。论文在比对了 pctr 和 rctr 的变化趋势后，发现在大于某个阈值 tc 时， pctr 与 rctr 的差值指数式增大，所以做了个 log ，具体公式如下：</p>
-<p><img src="/.com//page-c45d3a68.png"></p>
+<p><img src="assets/page-c45d3a68.png" /></p>
 <h2 id="gauc">GAUC</h2>
 <p>AUC 的计算方式不合理，需要对 AUC 进行分组加权计算，得到的 AUC 称为 GAUC。比如对于用户 A，他比较喜欢点击广告，所以投放给 A 的广告预估点击率比较高；用户 B 则不太喜欢点击，所以投放给 B 的广告预估点击率比较低。现在用户为 A 的正样本和负样本有若干条，用户为 B 的正样本和负样本也有若干条，不妨假设我们的点击率预测模型特别牛逼，把用户为 A 的样本，正样本全部排到了负样本前面，对于用户为 B 的样本亦然，那么分别对于 A 和 B 来说，AUC 都为 1，但是两个人的样本混合到一起后，很有可能用户为 A 的某个负样本分值比用户为 B 的某个正样本分值还大，这种情况下 AUC 自然会小于 1。这个极端的例子是为了说明，把样本按照用户进行分组，单独计算每组样本的 AUC ，再进行加权求和，能更好地反映模型对样本的排序能力。 ## 最后 最后做个总结。我觉得可以从两个方面来讲讲 OCPC 的优势。一方面，正如《计算广告》所说，OCPX 就是优化目标与结算方式不一致的广告投放策略，OCPC 便是如此。通过引入目标函数，广告平台可以测试、调整各种不同的优化策略，以兼顾平台利益、广告主利益和用户体验。</p>
 <p>另一方面，从广告主的角度来考虑，OCPC 策略使得广告主对高质量流量提高出价，对低质量流量减少出价，这样虽然转化率提高了，通过打广告赚的钱变多了，但出价也提高了，打广告花的钱也变多了，从 ROI 数值来分析，似乎广告主没有更多获利。不过有很多潜在因素是 ROI 无法衡量的，比如高质量流量更可能产生回头客，精准投放会累积口碑等等，所以 OCPC 对广告主肯定是更有利的。</p>
@@ -145,7 +145,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/10/20/ocpc/" data-id="ck1yktefk0000258z2n5h61vl" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/10/20/ocpc/" data-id="ck1yl6smf00003o8zg42cashx" class="article-share-link">Share</a>
       
       
     </footer>
